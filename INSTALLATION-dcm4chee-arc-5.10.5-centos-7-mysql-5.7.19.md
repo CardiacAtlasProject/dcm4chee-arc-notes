@@ -47,6 +47,7 @@ Status: **working**
    
 4. Start up the vm engine, enter and update/install applications:
    ```
+   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/vagrant-bootstrap.sh
    $ vagrant up
    $ vagrant ssh
    [vagrant@localhost ~]$ 
