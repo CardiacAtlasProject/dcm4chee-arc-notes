@@ -11,7 +11,7 @@ sudo echo -e "export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0" >  /etc/profile
 
 # install pip & necessary modules
 if hash pip 2>/dev/null; then
-   echo "Package yarn has already been installed"
+   echo "Package pip has already been installed"
 else
 
   sudo yum -y install python-pip python-wheel
@@ -41,7 +41,7 @@ fi
 
 # installing mysql server 5.7
 if hash mysql 2>/dev/null; then
-  echo "Package mvn has already been installed"
+  echo "Package mysql has already been installed"
 else
 
   echo "INSTALLING MYSQL 5.7"
