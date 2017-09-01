@@ -20,11 +20,10 @@ Status: **working**
 
 2. Create a directory for your vm.
 
-3. Copy [vagrant-bootstrap.sh](dcm4chee-arc-notes/vagrant-bootstrap.sh) file to that directory.
-
 3. Create **CentOS 7** vm:
    ```
    $ cd <DIRECTORY_FROM_STEP_2>
+   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/vagrant-bootstrap.sh
    $ mkdir shared
    $ vagrant init centos/7
    ```
@@ -47,7 +46,6 @@ Status: **working**
    
 4. Start up the vm engine, enter and update/install applications:
    ```
-   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/vagrant-bootstrap.sh
    $ vagrant up
    $ vagrant ssh
    [vagrant@localhost ~]$ 
