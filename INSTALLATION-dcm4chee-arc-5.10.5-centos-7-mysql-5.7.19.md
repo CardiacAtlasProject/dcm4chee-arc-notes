@@ -13,14 +13,21 @@ Status: **working**
 # Setting up the vm
 
 1. If you don't have **vagrant**, then install it first [from here](https://www.vagrantup.com/downloads.html).
-
-2. Create **CentOS 7** vm:
+   And also the plugins
    ```
    $ vagrant plugin install vagrant-vbguest
+   ```
+
+2. Create a directory for your vm and copy [vagrant-bootstrap.sh](dcm4chee-arc-notes/vagrant-bootstrap.sh) file to that directory.
+
+3. Create **CentOS 7** vm:
+   ```
+   $ cd <DIRECTORY_FROM_STEP_2>
+   $ mkdir shared
    $ vagrant init centos/7
    ```
    
-3. Edit `Vagrantfile` file and insert the following lines for fowarding ports:
+3. Edit `Vagrantfile` file and insert the following lines:
    ```
    # wildfly web access
    config.vm.network "forwarded_port", guest: 8080, host: 8080
@@ -28,34 +35,24 @@ Status: **working**
    config.vm.network "forwarded_port", guest: 3306, host: 3306
    # ldap access (note that the host uses 3890 for safety reason)
    config.vm.network "forwarded_port", guest: 389, host: 3890
+
+   # share the shared folder
+   config.vm.synced_folder "./shared", "/shared"
+   
+   # run provisioning script
+   config.vm.provision :shell, path: "vagrant-bootstrap.sh"
    ```
    
 4. Start up the vm engine, enter and update/install applications:
    ```
    $ vagrant up
    $ vagrant ssh
-   [vagrant@localhost ~]$ sudo yum install -y wget vim epel-release 
-   [vagrant@localhost ~]$ sudo yum update
-   [vagrant@localhost ~]$ sudo yum groupinstall -y "Development tools"
-   [vagrant@localhost ~]$ sudo yum -y install java-1.8.0-openjdk-devel
-   [vagrant@localhost ~]$ sudo echo -e "export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0" >  /etc/profile.d/jdk1.8.0.sh
+   [vagrant@localhost ~]$ 
    ```
-
-The default shared folder is the `vagrant` that you can use for transfering files between guest and host machines.
-
+   
 > From now on, all command line statements are made within the vagrant vm. I will just write it as `$` for brevity.
 
 # Setting up the MySQL server
-
-```
-$ wget https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
-$ sudo rpm -ivh mysql57-community-release-el7-11.noarch.rpm
-$ sudo yum -y install mysql-server
-$ sudo systemctl start mysqld
-$ sudo systemctl status mysqld
-```
-
-You should see the status of **active (running)** on the output display.
 
 Lookup the default root password for mysql:
 ```
@@ -70,10 +67,6 @@ $ sudo mysql_secure_installation
 # Setting up OpenLDAP server
 
 ```
-$ sudo yum -y install openldap compat-openldap openldap-clients openldap-servers openldap-servers-sql openldap-devel
-$ sudo systemctl start slapd.service
-$ sudo systemctl enable slapd.service
-$ sudo systemctl status slapd.service
 $ sudo slappasswd
 New password:
 Re-enter new password:
