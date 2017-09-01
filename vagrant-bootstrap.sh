@@ -9,6 +9,18 @@ sudo yum -y groupinstall "Development tools"
 sudo yum -y install java-1.8.0-openjdk-devel
 sudo echo -e "export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0" >  /etc/profile.d/jdk1.8.0.sh
 
+# install pip & necessary modules
+if hash pip 2>/dev/null; then
+   echo "Package yarn has already been installed"
+else
+
+  sudo yum -y install python-pip python-wheel
+  sudo yum upgrade python-setuptools
+  sudo pip install --upgrade pip
+  sudo pip install docopt
+
+fi
+
 # installing maven 3.3.9
 if hash mvn 2>/dev/null; then
     echo "Package mvn has already been installed"
