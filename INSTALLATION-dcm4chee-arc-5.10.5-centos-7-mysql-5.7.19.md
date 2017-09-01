@@ -1,7 +1,5 @@
 This is a highly opinionated installation notes for unsecured dcm4chee-arc server.
 
-More installation details can be found from [dcm4chee-arc-light installation page](https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation).
-
 Status: **working**
 
 # I'm using ...
@@ -37,6 +35,7 @@ Status: **working**
    $ vagrant up
    $ vagrant ssh
    [vagrant@localhost ~]$ sudo yum update
+   [vagrant@localhost ~]$ sudo yum install -y wget vim
    ```
 
 The default shared folder is the `vagrant` that you can use for transfering files between guest and host machines.
@@ -46,7 +45,6 @@ The default shared folder is the `vagrant` that you can use for transfering file
 # Setting up the MySQL server
 
 ```
-$ sudo yum install -y wget
 $ wget https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
 $ sudo rpm -ivh mysql57-community-release-el7-11.noarch.rpm
 $ sudo yum -y install mysql-server
@@ -61,9 +59,20 @@ Lookup the default root password for mysql:
 $ sudo grep 'temporary password' /var/log/mysqld.log
 ```
 
-Replace the root password:
+Change the default root password:
 ```
 $ sudo mysql_secure_installation
 ```
 
 # Setting up OpenLDAP server
+
+```
+$ sudo yum -y install openldap compat-openldap openldap-clients openldap-servers openldap-servers-sql openldap-devel
+$ sudo systemctl start slapd.service
+$ sudo systemctl enable slapd.service
+$ sudo systemctl status slapd.service
+```
+
+# Installing dcm4chee-arc server
+
+The installation process is pretty complicated. You can see the full details from the [dcm4chee-arc-light installation page](https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation). I have made a python script to automate installing the dcm4chee-arc server.
