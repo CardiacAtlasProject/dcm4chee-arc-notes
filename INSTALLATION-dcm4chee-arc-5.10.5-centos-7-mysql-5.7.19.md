@@ -18,7 +18,9 @@ Status: **working**
    $ vagrant plugin install vagrant-vbguest
    ```
 
-2. Create a directory for your vm and copy [vagrant-bootstrap.sh](dcm4chee-arc-notes/vagrant-bootstrap.sh) file to that directory.
+2. Create a directory for your vm.
+
+3. Copy [vagrant-bootstrap.sh](dcm4chee-arc-notes/vagrant-bootstrap.sh) file to that directory.
 
 3. Create **CentOS 7** vm:
    ```
