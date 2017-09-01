@@ -51,6 +51,8 @@ Status: **working**
    $ vagrant ssh
    [vagrant@localhost ~]$ 
    ```
+
+You can transfer files between host and guest machines using `/shared` folder in the vm.
    
 > From now on, all command line statements are made within the vagrant vm. I will just write it as `$` for brevity.
 
