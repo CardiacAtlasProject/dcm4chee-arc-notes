@@ -100,7 +100,7 @@ $ wget -O- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.t
 $ WILDFLY_HOME=~/wildfly-10.1.0.Final
 ```
 
-3. Run the installation script:
+Run the installation script:
 ```
 $ 
 ```
