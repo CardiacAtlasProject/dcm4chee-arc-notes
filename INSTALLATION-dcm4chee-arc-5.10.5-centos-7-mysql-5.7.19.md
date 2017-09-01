@@ -71,7 +71,15 @@ $ sudo yum -y install openldap compat-openldap openldap-clients openldap-servers
 $ sudo systemctl start slapd.service
 $ sudo systemctl enable slapd.service
 $ sudo systemctl status slapd.service
+$ sudo slappasswd
+New password:
+Re-enter new password:
+SECRET_KEY
 ```
+
+The root OpenLDAP password and the `SECRET_KEY` are going to be needed for later. So, I make references for this note as:
+* **`$ROOT_OPENLDAP_PASSWD`** for the root password
+* **`$SECRET_KEY_OPENLDAP`** for the SECRET_KEY generated from the last command above
 
 # Installing dcm4chee-arc server
 
