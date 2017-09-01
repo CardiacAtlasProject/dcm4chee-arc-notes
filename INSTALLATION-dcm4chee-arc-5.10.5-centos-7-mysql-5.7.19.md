@@ -91,13 +91,11 @@ First, we need to download a couple of things.
 ```
 $ wget https://sourceforge.net/projects/dcm4che/files/dcm4chee-arc-light5/5.10.5/dcm4chee-arc-5.10.5-mysql.zip
 $ unzip dcm4chee-arc-5.10.5-mysql.zip
-$ DCM4CHEE_ARC=~/dcm4chee-arc-5.10.5-mysql
 ```
 
 2. Download the `wildfly` application server
 ```
 $ wget -O- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz | tar xvz
-$ WILDFLY_HOME=~/wildfly-10.1.0.Final
 ```
 
 Run the installation script:
