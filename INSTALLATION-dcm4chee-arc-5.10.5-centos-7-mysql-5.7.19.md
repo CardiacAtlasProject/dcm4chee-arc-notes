@@ -86,6 +86,21 @@ The root OpenLDAP password and the `SECRET_KEY` are going to be needed for later
 The installation process is pretty complicated. You can see the full details from the [dcm4chee-arc-light installation page](https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation). I have made a python script to automate the installation process.
 
 First, we need to download a couple of things.
+
+1. Download the `dcm4chee-arc` binary distribution
 ```
-$ wget -qO- https://sourceforge.net/projects/dcm4che/files/dcm4chee-arc-light5/5.10.5/dcm4chee-arc-5.10.5-mysql.zip | unzip
+$ wget https://sourceforge.net/projects/dcm4che/files/dcm4chee-arc-light5/5.10.5/dcm4chee-arc-5.10.5-mysql.zip
+$ unzip dcm4chee-arc-5.10.5-mysql.zip
+$ DCM4CHEE_ARC=~/dcm4chee-arc-5.10.5-mysql
+```
+
+2. Download the `wildfly` application server
+```
+$ wget -O- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz | tar xvz
+$ WILDFLY_HOME=~/wildfly-10.1.0.Final
+```
+
+3. Run the installation script:
+```
+$ 
 ```
