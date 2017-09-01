@@ -30,12 +30,15 @@ Status: **working**
    config.vm.network "forwarded_port", guest: 389, host: 3890
    ```
    
-4. Start up the vm engine, enter and update default applications:
+4. Start up the vm engine, enter and update/install applications:
    ```
    $ vagrant up
    $ vagrant ssh
+   [vagrant@localhost ~]$ sudo yum install -y wget vim epel-release 
    [vagrant@localhost ~]$ sudo yum update
-   [vagrant@localhost ~]$ sudo yum install -y wget vim
+   [vagrant@localhost ~]$ sudo yum groupinstall -y "Development tools"
+   [vagrant@localhost ~]$ sudo yum -y install java-1.8.0-openjdk-devel
+   [vagrant@localhost ~]$ sudo echo -e "export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0" >  /etc/profile.d/jdk1.8.0.sh
    ```
 
 The default shared folder is the `vagrant` that you can use for transfering files between guest and host machines.
@@ -77,10 +80,15 @@ Re-enter new password:
 SECRET_KEY
 ```
 
-The root OpenLDAP password and the `SECRET_KEY` are going to be needed for later. So, I make references for this note as:
+The root OpenLDAP password and the `SECRET_KEY` are going to be needed for later steps. So, I make references for this note as:
 * **`$ROOT_OPENLDAP_PASSWD`** for the root password
 * **`$SECRET_KEY_OPENLDAP`** for the SECRET_KEY generated from the last command above
 
 # Installing dcm4chee-arc server
 
-The installation process is pretty complicated. You can see the full details from the [dcm4chee-arc-light installation page](https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation). I have made a python script to automate installing the dcm4chee-arc server.
+The installation process is pretty complicated. You can see the full details from the [dcm4chee-arc-light installation page](https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation). I have made a python script to automate the installation process.
+
+First, we need to download a couple of things.
+```
+$ wget -qO- https://sourceforge.net/projects/dcm4che/files/dcm4chee-arc-light5/5.10.5/dcm4chee-arc-5.10.5-mysql.zip | unzip
+```
