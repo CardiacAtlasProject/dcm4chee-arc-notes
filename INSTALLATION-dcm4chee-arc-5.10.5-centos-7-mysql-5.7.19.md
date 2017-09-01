@@ -95,7 +95,7 @@ $ unzip dcm4chee-arc-5.10.5-mysql.zip
 
 2. Download the `wildfly` application server
 ```
-$ wget -O- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz | tar xvz
+$ wget -qO- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz | tar xvz
 ```
 
 Run the installation script:
