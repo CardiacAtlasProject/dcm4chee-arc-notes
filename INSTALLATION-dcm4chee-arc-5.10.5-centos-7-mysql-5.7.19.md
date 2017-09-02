@@ -102,7 +102,29 @@ $ wget -qO- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.
 $ wget -qO- https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.44.tar.gz | tar xvz
 ```
 
-Run the installation script:
+Create `config.json` file below to set user settings and permissions to the MySQL and OpenLDAP servers. Change the values according to your setup.
+```json
+{
+  "dcm4cheeDir": "/home/vagrant/dcm4chee-arc-5.10.5-mysql",
+  "wildflyHome": "/home/vagrant/wildfly-10.1.0.Final",
+  "mysql": {
+    "host": "localhost",
+    "port": 3306,
+    "rootPasswd": "<ROOT_PASSWORD_TO_MYSQL_FROM_PREVIOUS_STEP>",
+    "dbName": "<DCM4CHEE_PACS_DATABASE_NAME>",
+    "userName": "<NEW_MYSQL_USER_TO_CONNECT_FROM_DCM4CHEE>",
+    "userPasswd": "<SET_MYSQL_USER_PASSWORD>"
+  },
+  "ldap": {
+    "rootPasswd": "<$ROOT_OPENLDAP_PASSWD>",
+    "olcRootPW": "<$SECRET_KEY_OPENLDAP>",
+    "domainName": "your-domain.org"
+  },
+  "jdbcJarFile" : "/home/vagrant/mysql-connector-java-5.1.44/mysql-connector-java-5.1.44-bin.jar"
+}
 ```
-$ 
+
+Run the installation script:
+```bash
+$ ./install-dcm4chee-arc-mysql.py dcm4chee-arc-config.json
 ```
