@@ -102,7 +102,7 @@ $ wget -qO- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.
 $ wget -qO- https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.44.tar.gz | tar xvz
 ```
 
-Create `config.json` file below to set user settings and permissions to the MySQL and OpenLDAP servers. Change the values according to your setup.
+Create `dcm4chee-arc-config.json` file below to set user settings and permissions to the MySQL and OpenLDAP servers. Change the values according to your setup.
 ```json
 {
   "dcm4cheeDir": "/home/vagrant/dcm4chee-arc-5.10.5-mysql",
