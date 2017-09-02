@@ -97,6 +97,11 @@ $ unzip dcm4chee-arc-5.10.5-mysql.zip
 $ wget -qO- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz | tar xvz
 ```
 
+3. Download the mySQL JDBC connector
+```
+$ wget -qO- https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.44.tar.gz | tar xvz
+```
+
 Run the installation script:
 ```
 $ 
