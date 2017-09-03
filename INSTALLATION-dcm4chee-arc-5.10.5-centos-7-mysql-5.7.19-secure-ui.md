@@ -1,6 +1,6 @@
-This is a highly opinionated installation notes for unsecured dcm4chee-arc server.
+This is a highly opinionated installation notes for **secured** dcm4chee-arc server.
 
-Status: **working**
+Status: *in progress*
 
 # I'm using ...
 
@@ -88,8 +88,8 @@ First, we need to download a couple of things.
 
 1. Download the `dcm4chee-arc` binary distribution
 ```
-$ wget https://sourceforge.net/projects/dcm4che/files/dcm4chee-arc-light5/5.10.5/dcm4chee-arc-5.10.5-mysql.zip
-$ unzip dcm4chee-arc-5.10.5-mysql.zip
+$ wget https://sourceforge.net/projects/dcm4che/files/dcm4chee-arc-light5/5.10.5/dcm4chee-arc-5.10.5-mysql-secure-ui.zip
+$ unzip dcm4chee-arc-5.10.5-mysql-secure-ui.zip
 ```
 
 2. Download the `wildfly` application server
@@ -97,7 +97,13 @@ $ unzip dcm4chee-arc-5.10.5-mysql.zip
 $ wget -qO- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz | tar xvz
 ```
 
-3. Download the mySQL JDBC connector
+3. Download `Keycloak` access management
+```
+$ wget -qO- https://downloads.jboss.org/keycloak/2.4.0.Final/keycloak-overlay-2.4.0.Final.tar.gz | tar xvz
+$ wget -qO- https://downloads.jboss.org/keycloak/2.4.0.Final/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-2.4.0.Final.tar.gz | tar xvz
+```
+
+4. Download the mySQL JDBC connector
 ```
 $ wget -qO- https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.44.tar.gz | tar xvz
 ```
