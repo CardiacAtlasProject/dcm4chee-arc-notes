@@ -152,4 +152,5 @@ In the next step, you must run the dcm4chee-arc and apply the configuration step
 4. Open the UI at http://localhost:8080/dcm4chee-arc/ui2
 
 
+-----
 **ENJOY!!**
