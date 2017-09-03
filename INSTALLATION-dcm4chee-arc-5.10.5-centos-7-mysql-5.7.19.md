@@ -141,6 +141,7 @@ In the next step, you must run the dcm4chee-arc and apply the configuration step
    Note the binding address `0.0.0.0` in order to accept webpage request from all sources.
    
 2. Open a shell in another terminal.
+
    *You can open another shell by calling `vagrant ssh` again from your guest machine*
 
 3. Configure the wildfly using another script:
