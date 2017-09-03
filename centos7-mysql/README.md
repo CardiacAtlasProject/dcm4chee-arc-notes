@@ -23,7 +23,7 @@ Status: **working**
 3. Create **CentOS 7** vm:
    ```
    $ cd <DIRECTORY_FROM_STEP_2>
-   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/utils/master/vagrant-bootstrap.sh
+   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/utils/vagrant-bootstrap.sh
    $ mkdir shared
    $ vagrant init centos/7
    ```
@@ -126,7 +126,7 @@ Create `dcm4chee-arc-config.json` file below to set user settings and permission
 
 Run the installation script:
 ```bash
-$ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/centos7-mysql/master/install-dcm4chee-arc-mysql.py
+$ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/centos7-mysql/install-dcm4chee-arc-mysql.py
 $ python install-dcm4chee-arc-mysql.py dcm4chee-arc-config.json
 ```
 
@@ -146,7 +146,7 @@ In the next step, you must run the dcm4chee-arc and apply the configuration step
 
 3. Configure the wildfly using another script:
    ```
-   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/centos7-mysql/master/configure-dcm4chee-arc.py
+   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/centos7-mysql/configure-dcm4chee-arc.py
    $ python configure-dcm4chee-arc.py dcm4chee-arc-config.json
    ```  
 
