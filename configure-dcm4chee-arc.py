@@ -59,7 +59,7 @@ if __name__ == "__main__":
     jbossCLI = mainConfig['wildflyHome'] + r'/bin/jboss-cli.sh'
 
     print('Add data source')
-    with open('/tmp/deploy.cli','w') as f:
+    with open('/tmp/add-data-source.cli','w') as f:
         f.write('/subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql)\n')
         f.write('data-source add --name=PacsDS --driver-name=mysql --jndi-name=java:/PacsDS \\\n')
         f.write('--connection-url=jdbc:mysql://' + mainConfig['mysql']['host'] + ':3306/' + mainConfig['mysql']['dbName'] + ' \\\n')
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     subprocess.call([jbossCLI, '-c', '--file=/tmp/deploy.cli'])
 
     # cleaning up
-    for f in ['deploy.cli', 'deploy.cli']:
+    for f in ['add-data-source.cli', 'deploy.cli']:
         os.remove('/tmp/' + f)
 
     logtime("FINISHED.")
