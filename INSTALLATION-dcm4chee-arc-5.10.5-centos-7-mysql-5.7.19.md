@@ -43,6 +43,7 @@ Status: **working**
    # run provisioning script
    config.vm.provision :shell, path: "vagrant-bootstrap.sh"
    ```
+   The `shared` folder is optional if you want to exchange files between host and guest VM. You must create the `shared` folder first to work.
    
 4. Start up the vm engine, enter and update/install applications:
    ```
