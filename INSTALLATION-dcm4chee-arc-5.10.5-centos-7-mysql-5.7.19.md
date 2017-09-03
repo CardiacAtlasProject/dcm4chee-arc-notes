@@ -127,7 +127,7 @@ Create `dcm4chee-arc-config.json` file below to set user settings and permission
 Run the installation script:
 ```bash
 $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/install-dcm4chee-arc-mysql.py
-$ ./install-dcm4chee-arc-mysql.py dcm4chee-arc-config.json
+$ python install-dcm4chee-arc-mysql.py dcm4chee-arc-config.json
 ```
 
 # Configure the WildFly
@@ -146,7 +146,7 @@ In the next step, you must run the dcm4chee-arc and apply the configuration step
 3. Configure the wildfly using another script:
    ```
    $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/configure-dcm4chee-arc.py
-   $ ./configure-dcm4chee-arc.py dcm4chee-arc-config.json
+   $ python configure-dcm4chee-arc.py dcm4chee-arc-config.json
    ```  
    
 4. Open the UI at http://localhost:8080/dcm4chee-arc/ui2
