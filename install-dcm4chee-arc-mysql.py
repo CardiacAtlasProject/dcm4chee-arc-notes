@@ -243,6 +243,10 @@ if __name__ == "__main__":
     SetupOpenLDAP()
     SetupWildFly()
 
+    # cleaning up
+    for f in ['modify-baseDN.ldif', 'init-baseDN.ldif', 'init-config.ldif', 'default-config.ldif', 'add-vendor-data.ldif']:
+        os.remove('/tmp/' + f)
+
     logtime("FINISHED.")
     print("Start WildFly in standalone as: " + \
           bcolors.OKBLUE + \
