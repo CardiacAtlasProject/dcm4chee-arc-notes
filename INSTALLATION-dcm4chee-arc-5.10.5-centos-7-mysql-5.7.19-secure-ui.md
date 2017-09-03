@@ -99,8 +99,8 @@ $ wget -qO- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.
 
 3. Download `Keycloak` access management
 ```
-$ wget -qO- https://downloads.jboss.org/keycloak/2.4.0.Final/keycloak-overlay-2.4.0.Final.tar.gz | tar xvz
-$ wget -qO- https://downloads.jboss.org/keycloak/2.4.0.Final/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-2.4.0.Final.tar.gz | tar xvz
+$ wget -qO- https://downloads.jboss.org/keycloak/2.4.0.Final/keycloak-overlay-2.4.0.Final.tar.gz | tar xvz -C wildfly-10.1.0.Final
+$ wget -qO- https://downloads.jboss.org/keycloak/2.4.0.Final/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-2.4.0.Final.tar.gz | tar xvz -C wildfly-10.1.0.Final
 ```
 
 4. Download the mySQL JDBC connector
@@ -111,7 +111,7 @@ $ wget -qO- https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java
 Create `dcm4chee-arc-config.json` file below to set user settings and permissions to the MySQL and OpenLDAP servers. Change the values according to your setup.
 ```json
 {
-  "dcm4cheeDir": "/home/vagrant/dcm4chee-arc-5.10.5-mysql",
+  "dcm4cheeDir": "/home/vagrant/dcm4chee-arc-5.10.5-mysql-secure-ui",
   "wildflyHome": "/home/vagrant/wildfly-10.1.0.Final",
   "mysql": {
     "host": "localhost",
