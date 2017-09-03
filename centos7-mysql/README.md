@@ -23,11 +23,11 @@ Status: **working**
 3. Create **CentOS 7** vm:
    ```
    $ cd <DIRECTORY_FROM_STEP_2>
-   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/vagrant-bootstrap.sh
+   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/utils/master/vagrant-bootstrap.sh
    $ mkdir shared
    $ vagrant init centos/7
    ```
-   
+
 3. Edit `Vagrantfile` file and insert the following lines:
    ```
    # wildfly web access
@@ -39,20 +39,20 @@ Status: **working**
 
    # share the shared folder
    config.vm.synced_folder "./shared", "/shared"
-   
+
    # run provisioning script
    config.vm.provision :shell, path: "vagrant-bootstrap.sh"
    ```
-   
+
 4. Start up the vm engine, enter and update/install applications:
    ```
    $ vagrant up
    $ vagrant ssh
-   [vagrant@localhost ~]$ 
+   [vagrant@localhost ~]$
    ```
 
 You can transfer files between host and guest machines using `/shared` folder in the vm.
-   
+
 > From now on, all command line statements are made within the vagrant vm. I will just write it as `$` for brevity.
 
 # Setting up the MySQL server
@@ -126,7 +126,7 @@ Create `dcm4chee-arc-config.json` file below to set user settings and permission
 
 Run the installation script:
 ```bash
-$ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/install-dcm4chee-arc-mysql.py
+$ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/centos7-mysql/master/install-dcm4chee-arc-mysql.py
 $ python install-dcm4chee-arc-mysql.py dcm4chee-arc-config.json
 ```
 
@@ -139,17 +139,17 @@ In the next step, you must run the dcm4chee-arc and apply the configuration step
    $ ~/wildfly-10.1.0.Final/bin/standalone.sh -b 0.0.0.0 -c dcm4chee-arc.xml
    ```
    Note the binding address `0.0.0.0` in order to accept webpage request from all sources.
-   
+
 2. Open a shell in another terminal.
 
    *You can open another shell by calling `vagrant ssh` again from your guest machine*
 
 3. Configure the wildfly using another script:
    ```
-   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/configure-dcm4chee-arc.py
+   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/centos7-mysql/master/configure-dcm4chee-arc.py
    $ python configure-dcm4chee-arc.py dcm4chee-arc-config.json
    ```  
-   
+
 4. Open the UI at http://localhost:8080/dcm4chee-arc/ui2
 
 
