@@ -80,25 +80,27 @@ The root OpenLDAP password and the `SECRET_KEY` are going to be needed for later
 * **`$ROOT_OPENLDAP_PASSWD`** for the root password
 * **`$SECRET_KEY_OPENLDAP`** for the SECRET_KEY generated from the last command above
 
-# Prepare for dcm4chee-arc
+# Setting up dcm4chee-arc, WildFly and Keycloak
 
-The installation process is pretty complicated. You can see the full details from the [dcm4chee-arc-light installation page](https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation). I have made a python script to automate the installation process.
+Full details are given in https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation-and-Configuration
+
+Following instructions have been made easier for the settings above.
 
 1. Download the `dcm4chee-arc` binary distribution
-```
-$ wget https://sourceforge.net/projects/dcm4che/files/dcm4chee-arc-light5/5.10.5/dcm4chee-arc-5.10.5-mysql-secure-ui.zip
-$ unzip dcm4chee-arc-5.10.5-mysql-secure-ui.zip
-```
+   ```
+   $ wget https://sourceforge.net/projects/dcm4che/files/dcm4chee-arc-light5/5.10.5/dcm4chee-arc-5.10.5-mysql-secure-ui.zip
+   $ unzip dcm4chee-arc-5.10.5-mysql-secure-ui.zip
+   ```
 
 2. Download the `wildfly` application server
-```
-$ wget -qO- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz | tar xvz
-```
+   ```
+   $ wget -qO- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz | tar xvz
+   ```
 
 3. Download the mySQL JDBC connector
-```
-$ wget -qO- https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.44.tar.gz | tar xvz
-```
+   ```
+   $ wget -qO- https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.44.tar.gz | tar xvz
+   ```
 
 4. Create `dcm4chee-arc-config.json` file below to set user settings and permissions to the MySQL and OpenLDAP servers. Change the values according to your setup.
     ```json
@@ -122,9 +124,7 @@ $ wget -qO- https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java
     }
     ```
 
-# Install dcm4chee-arc server
-
-1. Run the installation script:
+5. Run the installation script:
     ```bash
     $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/centos7-mysql-secured/install-dcm4chee-arc-mysql-secure.py
     $ python install-dcm4chee-arc-mysql-secure.py dcm4chee-arc-config.json
