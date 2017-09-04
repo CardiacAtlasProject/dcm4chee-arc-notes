@@ -23,11 +23,11 @@ Status: *in progress*
 3. Create **CentOS 7** vm:
    ```
    $ cd <DIRECTORY_FROM_STEP_2>
-   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/vagrant-bootstrap.sh
+   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/utils/vagrant-bootstrap.sh
    $ mkdir shared
    $ vagrant init centos/7
    ```
-   
+
 3. Edit `Vagrantfile` file and insert the following lines:
    ```
    # wildfly web access
@@ -39,20 +39,20 @@ Status: *in progress*
 
    # share the shared folder
    config.vm.synced_folder "./shared", "/shared"
-   
+
    # run provisioning script
    config.vm.provision :shell, path: "vagrant-bootstrap.sh"
    ```
-   
+
 4. Start up the vm engine, enter and update/install applications:
    ```
    $ vagrant up
    $ vagrant ssh
-   [vagrant@localhost ~]$ 
+   [vagrant@localhost ~]$
    ```
 
 You can transfer files between host and guest machines using `/shared` folder in the vm.
-   
+
 > From now on, all command line statements are made within the vagrant vm. I will just write it as `$` for brevity.
 
 # Setting up the MySQL server
@@ -80,11 +80,9 @@ The root OpenLDAP password and the `SECRET_KEY` are going to be needed for later
 * **`$ROOT_OPENLDAP_PASSWD`** for the root password
 * **`$SECRET_KEY_OPENLDAP`** for the SECRET_KEY generated from the last command above
 
-# Installing dcm4chee-arc server
+# Prepare for dcm4chee-arc
 
 The installation process is pretty complicated. You can see the full details from the [dcm4chee-arc-light installation page](https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation). I have made a python script to automate the installation process.
-
-First, we need to download a couple of things.
 
 1. Download the `dcm4chee-arc` binary distribution
 ```
@@ -97,44 +95,40 @@ $ unzip dcm4chee-arc-5.10.5-mysql-secure-ui.zip
 $ wget -qO- http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz | tar xvz
 ```
 
-3. Download `Keycloak` access management
-```
-$ wget -qO- https://downloads.jboss.org/keycloak/2.4.0.Final/keycloak-overlay-2.4.0.Final.tar.gz | tar xvz -C wildfly-10.1.0.Final
-$ wget -qO- https://downloads.jboss.org/keycloak/2.4.0.Final/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-2.4.0.Final.tar.gz | tar xvz -C wildfly-10.1.0.Final
-```
-
-4. Download the mySQL JDBC connector
+3. Download the mySQL JDBC connector
 ```
 $ wget -qO- https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.44.tar.gz | tar xvz
 ```
 
-Create `dcm4chee-arc-config.json` file below to set user settings and permissions to the MySQL and OpenLDAP servers. Change the values according to your setup.
-```json
-{
-  "dcm4cheeDir": "/home/vagrant/dcm4chee-arc-5.10.5-mysql-secure-ui",
-  "wildflyHome": "/home/vagrant/wildfly-10.1.0.Final",
-  "mysql": {
-    "host": "localhost",
-    "port": 3306,
-    "rootPasswd": "<ROOT_PASSWORD_TO_MYSQL_FROM_PREVIOUS_STEP>",
-    "dbName": "<DCM4CHEE_PACS_DATABASE_NAME>",
-    "userName": "<NEW_MYSQL_USER_TO_CONNECT_FROM_DCM4CHEE>",
-    "userPasswd": "<SET_MYSQL_USER_PASSWORD>"
-  },
-  "ldap": {
-    "rootPasswd": "<$ROOT_OPENLDAP_PASSWD>",
-    "olcRootPW": "<$SECRET_KEY_OPENLDAP>",
-    "domainName": "your-domain.org"
-  },
-  "jdbcJarFile" : "/home/vagrant/mysql-connector-java-5.1.44/mysql-connector-java-5.1.44-bin.jar"
-}
-```
+4. Create `dcm4chee-arc-config.json` file below to set user settings and permissions to the MySQL and OpenLDAP servers. Change the values according to your setup.
+    ```json
+    {
+      "dcm4cheeDir": "/home/vagrant/dcm4chee-arc-5.10.5-mysql-secure-ui",
+      "wildflyHome": "/home/vagrant/wildfly-10.1.0.Final",
+      "mysql": {
+        "host": "localhost",
+        "port": 3306,
+        "rootPasswd": "<ROOT_PASSWORD_TO_MYSQL_FROM_PREVIOUS_STEP>",
+        "dbName": "<DCM4CHEE_PACS_DATABASE_NAME>",
+        "userName": "<NEW_MYSQL_USER_TO_CONNECT_FROM_DCM4CHEE>",
+        "userPasswd": "<SET_MYSQL_USER_PASSWORD>"
+      },
+      "ldap": {
+        "rootPasswd": "<$ROOT_OPENLDAP_PASSWD>",
+        "olcRootPW": "<$SECRET_KEY_OPENLDAP>",
+        "domainName": "your-domain.org"
+      },
+      "jdbcJarFile" : "/home/vagrant/mysql-connector-java-5.1.44/mysql-connector-java-5.1.44-bin.jar"
+    }
+    ```
 
-Run the installation script:
-```bash
-$ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/install-dcm4chee-arc-mysql.py
-$ python install-dcm4chee-arc-mysql.py dcm4chee-arc-config.json
-```
+# Install dcm4chee-arc server
+
+1. Run the installation script:
+    ```bash
+    $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/centos7-mysql-secured/install-dcm4chee-arc-mysql-secure.py
+    $ python install-dcm4chee-arc-mysql-secure.py dcm4chee-arc-config.json
+    ```
 
 # Configure the WildFly
 
@@ -145,17 +139,37 @@ In the next step, you must run the dcm4chee-arc and apply the configuration step
    $ ~/wildfly-10.1.0.Final/bin/standalone.sh -b 0.0.0.0 -c dcm4chee-arc.xml
    ```
    Note the binding address `0.0.0.0` in order to accept webpage request from all sources.
-   
+
 2. Open a shell in another terminal.
 
    *You can open another shell by calling `vagrant ssh` again from your guest machine*
+
+3. Install Keycloak adapter:
+   ```
+   $ ~/wildfly-10.1.0.Final/bin/jboss-cli.sh -c --file=~/wildfly-10.1.0.Final/bin/adapter-install.cli
+   ```
+
+4. Add keycload admin user
+   ```
+   $ ~/wildfly-10.1.0.Final/bin/add-user-keycloak.sh --user admin
+   Password:
+   ```
+
+5. **Restart Wildfly**
+
+6. Follow steps **12 -- 22** from https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation-and-Configuration
+
+
+
+6. Go to http://localhost:8080/auth and login with the new admin user above.
+
 
 3. Configure the wildfly using another script:
    ```
    $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/configure-dcm4chee-arc.py
    $ python configure-dcm4chee-arc.py dcm4chee-arc-config.json
    ```  
-   
+
 4. Open the UI at http://localhost:8080/dcm4chee-arc/ui2
 
 
