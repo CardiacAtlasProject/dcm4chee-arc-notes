@@ -207,7 +207,7 @@ def SetupWildFly():
     ps = subprocess.Popen(['wget', '-qO-', 'https://downloads.jboss.org/keycloak/2.4.0.Final/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-2.4.0.Final.tar.gz'], stdout=subprocess.PIPE)
     subprocess.call(['tar', 'xvz', '-C', wildflyHome], stdin=ps.stdout)
 
-    print('Modify keycloak-instal.cli')
+    print('Modify keycloak-install.cli')
     subprocess.call(['sed', '-i', 's/standalone.xml/dcm4chee-arc.xml/', wildflyHome + '/bin/keycloak-install.cli'])
     subprocess.call(['sed', '-i', 's/default-keycloak-subsys-config.cli/' + \
        re.sub('/','\\/', wildflyHome + '/bin/') + 'default-keycloak-subsys-config.cli/', \
@@ -227,7 +227,7 @@ def SetupWildFly():
     nProvider = ET.SubElement( nSpi, 'provider', name="dcm4che-audit", enabled="true")
     nProps = ET.SubElement( nProvider, 'properties' )
     ET.SubElement( nProps, 'property', name="includes", \
-                   value="[&quot;LOGIN&quot;, &quot;LOGIN_ERROR&quot;, &quot;LOGOUT&quot;, &quot;LOGOUT_ERROR&quot;]")
+                   value='["LOGIN", "LOGIN_ERROR", "LOGOUT", "LOGOUT_ERROR"]')
 
     newSysProp = ET.Element( 'system-properties' )
     ET.SubElement( newSysProp, 'property', name="auth-server-url", value="/auth" )
