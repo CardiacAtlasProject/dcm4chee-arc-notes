@@ -175,13 +175,6 @@ def SetupOpenLDAP():
     subprocess.call(['sudo', 'ldapmodify', '-x', '-w', ldapConfig['rootPasswd'], '-D',  \
                      'cn=admin,' + olcSuffix, '-H', 'ldap:///', '-f', '/tmp/add-vendor-data.ldif'])
 
-    # add default users
-    f = open('/tmp/default-users.ldif','w')
-    subprocess.call(['sed', sedStr, mainConfig['dcm4cheeDir'] + '/ldap/default-users.ldif'], stdout=f)
-    f.close()
-    subprocess.call(['sudo', 'ldapadd', '-x', '-w', ldapConfig['rootPasswd'], '-D', 'cn=admin,' + olcSuffix, \
-                     '-f', '/tmp/default-users.ldif'])
-
 
 def SetupWildFly():
     """
