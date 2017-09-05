@@ -134,7 +134,7 @@ $ python install-dcm4chee-arc-mysql.py dcm4chee-arc-config.json
 
 In the next step, you must run the dcm4chee-arc and apply the configuration steps below from another shell.
 
-1. Start the `dcm4chee-arc`
+1. Start the `WildFly` with `dcm4chee-arc.xml` setting
    ```
    $ ~/wildfly-10.1.0.Final/bin/standalone.sh -b 0.0.0.0 -c dcm4chee-arc.xml
    ```

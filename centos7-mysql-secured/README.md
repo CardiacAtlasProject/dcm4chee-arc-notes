@@ -103,6 +103,9 @@ Following instructions have been made easier for the settings above.
    ```
 
 4. Create `dcm4chee-arc-config.json` file below to set user settings and permissions to the MySQL and OpenLDAP servers. Change the values according to your setup.
+
+    **Don't worry about keycloak keys properties at this moment. Leave them as it is. We will update them later.**
+
     ```json
     {
       "dcm4cheeDir": "/home/vagrant/dcm4chee-arc-5.10.5-mysql-secure-ui",
@@ -120,7 +123,12 @@ Following instructions have been made easier for the settings above.
         "olcRootPW": "<$SECRET_KEY_OPENLDAP>",
         "domainName": "your-domain.org"
       },
-      "jdbcJarFile" : "/home/vagrant/mysql-connector-java-5.1.44/mysql-connector-java-5.1.44-bin.jar"
+      "jdbcJarFile" : "/home/vagrant/mysql-connector-java-5.1.44/mysql-connector-java-5.1.44-bin.jar",
+      "keycloak": {
+        "dcm4che-public-key": "<COPY_PASTE_DCM4CHE_PUBLIC_KEY_HERE>",
+        "dcm4che-arc-ui-secret-key": "<COPY_PASTE_DC4CHE-ARC-UI_SECRET_KEY_HERE>",
+        "dcm4che-arc-rs-secret-key": "<COPY_PASTE_DC4CHE-ARC-RS_SECRET_KEY_HERE>"
+      }
     }
     ```
 
@@ -130,44 +138,102 @@ Following instructions have been made easier for the settings above.
     $ python install-dcm4chee-arc-mysql-secure.py dcm4chee-arc-config.json
     ```
 
-# Configure the WildFly
-
-In the next step, you must run the dcm4chee-arc and apply the configuration steps below from another shell.
-
-1. Start the `dcm4chee-arc`
+6. Start the `WildFly` with `dcm4chee-arc.xml` setting
    ```
    $ ~/wildfly-10.1.0.Final/bin/standalone.sh -b 0.0.0.0 -c dcm4chee-arc.xml
    ```
    Note the binding address `0.0.0.0` in order to accept webpage request from all sources.
 
-2. Open a shell in another terminal.
+7. Open a shell in another terminal.
 
    *You can open another shell by calling `vagrant ssh` again from your guest machine*
 
-3. Install Keycloak adapter:
-   ```
-   $ ~/wildfly-10.1.0.Final/bin/jboss-cli.sh -c --file=~/wildfly-10.1.0.Final/bin/adapter-install.cli
-   ```
 
-4. Add keycload admin user
+8. Install Keycloak adapter and add admin user:
    ```
+   $ ~/wildfly-10.1.0.Final/bin/jboss-cli.sh -c --file=wildfly-10.1.0.Final/bin/adapter-install.cli
    $ ~/wildfly-10.1.0.Final/bin/add-user-keycloak.sh --user admin
    Password:
    ```
 
-5. **Restart Wildfly**
-
-6. Follow steps **12 -- 22** from https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation-and-Configuration
-
+9. **Restart Wildfly**
+   `CTRL+C` on the terminal output of Step 6, then run it again.
 
 
-6. Go to http://localhost:8080/auth and login with the new admin user above.
+# Create Keycloak user roles, accounts and permissions
 
+You need to do the following steps manually on a browser:
 
-3. Configure the wildfly using another script:
+1. Open http://localhost:8080/auth
+
+2. Go to Administration Console and login with `admin` user that you created on the Step 8 above.
+
+3. Add new realm called
    ```
-   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/configure-dcm4chee-arc.py
-   $ python configure-dcm4chee-arc.py dcm4chee-arc-config.json
+       Name: dcm4che
+   ```
+
+4. Using `dcm4che` realm, create a new client
+   ```
+      Client ID : dcm4chee-arc-ui
+   ```
+   After clicking `Save` button, set the following properties:
+   ```
+      Valid Redirect UIs : /dcm4chee-arc/ui2/*
+      Admin URL : /dcm4chee-arc/ui2/
+      Access Type : Confidential
+   ```
+   Click `Save` button.
+
+5. Create another new client for the RESTful services:
+   ```
+      Client ID : dcm4chee-arc-rs
+   ```
+   with the following properties
+   ```
+      Valid Redirect UIs : /dcm4chee-arc/*
+      Admin URL : /dcm4chee-arc
+      Access Type : Confidential
+   ```
+
+6. Add new **Roles**:
+   ```
+      Role name : admin
+      Role name : auditlog
+      Role name : user
+   ```
+
+7. Add new **Users**:
+   ```
+      Username : user
+      Under the Role Mappings tab, map the 'user' role to this newly created user.
+      Under the Credentials tab, set the Password for this user.
+
+      Username : admin
+      Under the Role Mappings tab, map the 'user', 'auditlog' and 'admin' roles to this newly created user.
+      Under the Credentials tab, set the Password for this user.
+   ```
+
+8. Go to **Events** leftside menu / **Config** tab, add `dcm4che-audit` to the **Event Listeners** field.
+
+9. Edit the `dcm4chee-arc-config.json` file and update the keycloak's keys as follows:
+   ```
+      dcm4che-public-key : go to Realm Settings -> keys tab -> view public key
+      dcm4che-arc-ui-secret-key : go to Clients -> dcm4che-arc-ui -> Credentials -> Secret
+      dcm4che-arc-rs-secret-key : go to Clients -> dcm4che-arc-rs -> Credentials -> Secret
+   ```
+
+10. Logout from the Keycloak web.
+
+
+# Configure an deploy the `dcm4chee-arc` server
+
+1. **Restart Wildfly**
+
+2. Configure the wildfly using another script:
+   ```
+   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/centos7-mysql-secured/configure-dcm4chee-arc-secure.py
+   $ python configure-dcm4chee-arc-secure.py dcm4chee-arc-config.json
    ```  
 
 4. Open the UI at http://localhost:8080/dcm4chee-arc/ui2
