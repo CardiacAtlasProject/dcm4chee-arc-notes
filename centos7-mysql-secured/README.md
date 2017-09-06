@@ -1,6 +1,6 @@
 This is a highly opinionated installation notes for **secured** dcm4chee-arc server.
 
-Status: *in progress*
+Status: **working**
 
 # I'm using ...
 
@@ -80,7 +80,7 @@ The root OpenLDAP password and the `SECRET_KEY` are going to be needed for later
 * **`$ROOT_OPENLDAP_PASSWD`** for the root password
 * **`$SECRET_KEY_OPENLDAP`** for the SECRET_KEY generated from the last command above
 
-# Setting up dcm4chee-arc, WildFly and Keycloak
+# Configure WildFly
 
 Full details are given in https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation-and-Configuration
 
@@ -226,7 +226,7 @@ You need to do the following steps manually on a browser:
 10. Logout from the Keycloak web.
 
 
-# Configure an deploy the `dcm4chee-arc` server
+# Deploy the `dcm4chee-arc` server
 
 1. **Restart Wildfly**
 
