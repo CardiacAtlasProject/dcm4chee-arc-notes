@@ -82,11 +82,11 @@ if __name__ == "__main__":
 
     print('Set keycloak configuration and deploying')
     with open('/tmp/deploy.cli','w') as f:
-        f.write('deploy ' + mainConfig['dcm4cheeDir'] + '/deploy/dcm4chee-arc-ear-5.10.5-mysql-secure-ui.ear\n')
         f.write('/subsystem=keycloak/secure-deployment=dcm4chee-arc-ui2-5.10.5-secure.war/:add(realm=dcm4che,resource=dcm4chee-arc-ui,realm-public-key=' + mainConfig['keycloak']['dcm4che-public-key'] + ',auth-server-url=/auth)\n')
         f.write('/subsystem=keycloak/secure-deployment=dcm4chee-arc-ui2-5.10.5-secure.war/credential=secret:add(value=' + mainConfig['keycloak']['dcm4che-arc-ui-secret-key'] + ')\n')
         f.write('/subsystem=keycloak/secure-deployment=dcm4chee-arc-war-5.10.5-secure.war/:add(realm=dcm4che,resource=dcm4chee-arc-rs,realm-public-key=' + mainConfig['keycloak']['dcm4che-public-key'] + ',auth-server-url=/auth)\n')
         f.write('/subsystem=keycloak/secure-deployment=dcm4chee-arc-war-5.10.5-secure.war/credential=secret:add(value=' + mainConfig['keycloak']['dcm4che-arc-rs-secret-key'] + ')\n')
+        f.write('deploy ' + mainConfig['dcm4cheeDir'] + '/deploy/dcm4chee-arc-ear-5.10.5-mysql-secure-ui.ear\n')
     f.close()
     subprocess.call([jbossCLI, '-c', '--file=/tmp/deploy.cli'])
 

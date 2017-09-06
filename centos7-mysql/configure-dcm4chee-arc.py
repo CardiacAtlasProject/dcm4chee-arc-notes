@@ -64,6 +64,7 @@ if __name__ == "__main__":
         f.write('data-source add --name=PacsDS --driver-name=mysql --jndi-name=java:/PacsDS \\\n')
         f.write('--connection-url=jdbc:mysql://' + mainConfig['mysql']['host'] + ':3306/' + mainConfig['mysql']['dbName'] + ' \\\n')
         f.write('--user-name=' + mainConfig['mysql']['userName'] + ' --password=' + mainConfig['mysql']['userPasswd'] + '\n' )
+        f.write('data-source enable --name=PacsDS')
     f.close()
     subprocess.call([jbossCLI, '-c', '--file=/tmp/add-data-source.cli'])
 
