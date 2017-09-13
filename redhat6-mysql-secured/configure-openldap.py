@@ -2,7 +2,7 @@
 
 import json, argparse
 from time import gmtime, strftime
-import subprocess
+import subprocess, re
 
 
 # global function
