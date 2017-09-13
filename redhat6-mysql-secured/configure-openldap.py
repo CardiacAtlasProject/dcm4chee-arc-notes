@@ -5,10 +5,6 @@ from time import gmtime, strftime
 import subprocess, re
 
 
-# global function
-ldapConfig = []
-
-
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -27,7 +23,7 @@ def logtime(_msg):
     print(bcolors.HEADER + "[" + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "]: " + _msg + bcolors.ENDC)
 
 
-def SetupOpenLDAP():
+def SetupOpenLDAP(ldapConfig, _dcm4cheeDir):
     """
     Setup open LDAP server
     """
@@ -59,15 +55,15 @@ def SetupOpenLDAP():
 
     print("sudo ldapadd -Y EXTERNAL -H ldapi:/// -f $DCM4CHEE_ARC/ldap/slapd/dicom.ldif")
     subprocess.call(["sudo", "ldapadd", "-Y", "EXTERNAL", "-H", "ldapi:///", "-f", \
-                     mainConfig['dcm4cheeDir'] + "/ldap/slapd/dicom.ldif" ])
+                     _dcm4cheeDir + "/ldap/slapd/dicom.ldif" ])
 
     print("sudo ldapadd -Y EXTERNAL -H ldapi:/// -f $DCM4CHEE_ARC/ldap/slapd/dcm4che.ldif")
     subprocess.call(["sudo", "ldapadd", "-Y", "EXTERNAL", "-H", "ldapi:///", "-f", \
-                     mainConfig['dcm4cheeDir'] + "/ldap/slapd/dcm4che.ldif" ])
+                     _dcm4cheeDir + "/ldap/slapd/dcm4che.ldif" ])
 
     print("sudo ldapadd -Y EXTERNAL -H ldapi:/// -f $DCM4CHEE_ARC/ldap/slapd/dcm4chee-archive.ldif")
     subprocess.call(["sudo", "ldapadd", "-Y", "EXTERNAL", "-H", "ldapi:///", "-f", \
-                     mainConfig['dcm4cheeDir'] + "/ldap/slapd/dcm4chee-archive.ldif" ])
+                     _dcm4cheeDir + "/ldap/slapd/dcm4chee-archive.ldif" ])
 
     # create a temporary init-baseDN.ldif
     with open('/tmp/init-baseDN.ldif', 'w') as f:
@@ -87,21 +83,21 @@ def SetupOpenLDAP():
     sedStr = 's/dc=dcm4che,dc=org/' + olcSuffix + '/'
 
     f = open('/tmp/init-config.ldif','w')
-    subprocess.call(['sed', sedStr, mainConfig['dcm4cheeDir'] + '/ldap/init-config.ldif'], stdout=f)
+    subprocess.call(['sed', sedStr, _dcm4cheeDir + '/ldap/init-config.ldif'], stdout=f)
     f.close()
     subprocess.call(['sudo', 'ldapadd', '-x', '-w', ldapConfig['rootPasswd'], '-D', 'cn=admin,' + olcSuffix, \
                      '-f', '/tmp/init-config.ldif'])
 
     f = open('/tmp/default-config.ldif','w')
-    subprocess.call(['sed', sedStr, mainConfig['dcm4cheeDir'] + '/ldap/default-config.ldif'], stdout=f)
+    subprocess.call(['sed', sedStr, _dcm4cheeDir + '/ldap/default-config.ldif'], stdout=f)
     f.close()
     subprocess.call(['sudo', 'ldapadd', '-x', '-w', ldapConfig['rootPasswd'], '-D', 'cn=admin,' + olcSuffix, \
                      '-f', '/tmp/default-config.ldif'])
 
     f = open('/tmp/add-vendor-data.ldif','w')
-    subprocess.call(['sed', sedStr, mainConfig['dcm4cheeDir'] + '/ldap/add-vendor-data.ldif'], stdout=f)
+    subprocess.call(['sed', sedStr, _dcm4cheeDir + '/ldap/add-vendor-data.ldif'], stdout=f)
     f.close()
-    subprocess.call(['sed', '-i', 's/vendor-data.zip/' + re.sub('/','\\/',mainConfig['dcm4cheeDir']) + r'\/ldap\/vendor-data.zip/', '/tmp/add-vendor-data.ldif'])
+    subprocess.call(['sed', '-i', 's/vendor-data.zip/' + re.sub('/','\\/',_dcm4cheeDir) + r'\/ldap\/vendor-data.zip/', '/tmp/add-vendor-data.ldif'])
     subprocess.call(['sudo', 'ldapmodify', '-x', '-w', ldapConfig['rootPasswd'], '-D',  \
                      'cn=admin,' + olcSuffix, '-H', 'ldap:///', '-f', '/tmp/add-vendor-data.ldif'])
 
@@ -122,12 +118,9 @@ if __name__ == "__main__":
             config = json.load(f)
     f.close()
 
-    ldapConfig = config['ldap']
-
-
     # running some checks
     logtime("Configuring OpenLDAP")
-    SetupOpenLDAP()
+    SetupOpenLDAP(config['ldap'], config['dcm4cheeDir'])
 
     logtime("FINISHED.")
     print("Start WildFly in standalone as: " + \

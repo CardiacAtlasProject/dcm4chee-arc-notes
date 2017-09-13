@@ -1,6 +1,6 @@
 This is a highly opinionated installation notes for **secured** dcm4chee-arc server.
 
-Status: **working**
+Status: *in progress*
 
 # I'm using ...
 
@@ -102,6 +102,7 @@ See the mysqlclient documentation from https://mysqlclient.readthedocs.io/index.
 
 Configure the MySQL server:
 ```
+$ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/redhat6-mysql-secured/configure-mysql.py
 $ python3 configure-mysql.py dcm4chee-arc-config.json
 ```
 
@@ -111,8 +112,8 @@ Full details are given in https://github.com/dcm4che/dcm4chee-arc-light/wiki/Ins
 
 1. Run the installation script:
     ```bash
-    $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/centos7-mysql-secured/install-dcm4chee-arc-mysql-secure.py
-    $ python install-dcm4chee-arc-mysql-secure.py dcm4chee-arc-config.json
+    $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/redhat6-mysql-secured/configure-openldap.py
+    $ python3 configure-openldap.py dcm4chee-arc-config.json
     ```
 
 2. Start the `WildFly` with `dcm4chee-arc.xml` setting
