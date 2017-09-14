@@ -2,7 +2,7 @@
 
 import json, argparse
 from time import gmtime, strftime
-import subprocess, re
+import subprocess, re, os
 
 
 class bcolors:
@@ -33,17 +33,17 @@ def SetupOpenLDAP(ldapConfig, _dcm4cheeDir):
 
     # create a temporary modify-baseDN.ldif
     with open('/tmp/modify-baseDN.ldif', 'w') as f:
-        f.write('dn: olcDatabase={2}hdb,cn=config\n')
+        f.write('dn: olcDatabase={2}bdb,cn=config\n')
         f.write('changetype: modify\n')
         f.write('replace: olcSuffix\n')
         f.write('olcSuffix: ' + olcSuffix + '\n')
         f.write('\n')
-        f.write('dn: olcDatabase={2}hdb,cn=config\n')
+        f.write('dn: olcDatabase={2}bdb,cn=config\n')
         f.write('changetype: modify\n')
         f.write('replace: olcRootDN\n')
         f.write('olcRootDN: cn=admin,' + olcSuffix + '\n')
         f.write('\n')
-        f.write('dn: olcDatabase={2}hdb,cn=config\n')
+        f.write('dn: olcDatabase={2}bdb,cn=config\n')
         f.write('changetype: modify\n')
         f.write('replace: olcRootPW\n')
         f.write('olcRootPW: ' + ldapConfig['olcRootPW'] + '\n')
@@ -86,13 +86,13 @@ def SetupOpenLDAP(ldapConfig, _dcm4cheeDir):
     subprocess.call(['sed', sedStr, _dcm4cheeDir + '/ldap/init-config.ldif'], stdout=f)
     f.close()
     subprocess.call(['sudo', 'ldapadd', '-x', '-w', ldapConfig['rootPasswd'], '-D', 'cn=admin,' + olcSuffix, \
-                     '-f', '/tmp/init-config.ldif'])
+                     '-f', '/tmp/init-config.ldif', '-H', 'ldapi:///'])
 
     f = open('/tmp/default-config.ldif','w')
     subprocess.call(['sed', sedStr, _dcm4cheeDir + '/ldap/default-config.ldif'], stdout=f)
     f.close()
     subprocess.call(['sudo', 'ldapadd', '-x', '-w', ldapConfig['rootPasswd'], '-D', 'cn=admin,' + olcSuffix, \
-                     '-f', '/tmp/default-config.ldif'])
+                     '-f', '/tmp/default-config.ldif', '-H', 'ldapi:///'])
 
     f = open('/tmp/add-vendor-data.ldif','w')
     subprocess.call(['sed', sedStr, _dcm4cheeDir + '/ldap/add-vendor-data.ldif'], stdout=f)
