@@ -23,10 +23,13 @@ def logtime(_msg):
     print(bcolors.HEADER + "[" + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "]: " + _msg + bcolors.ENDC)
 
 
-def SetupWildFly(dcm4cheeDir, wildflyHome):
+def SetupWildFly(mainConfig):
     """
     Setup the WildFly configuration
     """
+
+    dcm4cheeDir = mainConfig['dcm4cheeDir']
+    wildflyHome = mainConfig['wildflyHome']
 
     print('DCM4CHEE-ARC DIR = ' + dcm4cheeDir)
     print('WILDFLY DIR = ', wildflyHome)
@@ -125,7 +128,7 @@ if __name__ == "__main__":
 
     # running some checks
     logtime("Configuring WildFly")
-    SetupWildFly(config['dcm4cheeDir'], config['wildflyHome'])
+    SetupWildFly(config)
 
     logtime("FINISHED.")
     print("Start WildFly in standalone as: " + \
