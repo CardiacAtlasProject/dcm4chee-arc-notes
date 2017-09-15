@@ -1,4 +1,4 @@
-This is a highly opinionated installation notes for **secured** dcm4chee-arc server.
+0This is a highly opinionated installation notes for **secured** dcm4chee-arc server.
 
 Status: *in progress*
 
@@ -77,7 +77,7 @@ The root OpenLDAP password and the `SECRET_KEY` are going to be needed for later
        "olcRootPW": "<$SECRET_KEY_OPENLDAP>",
        "domainName": "your-domain.org"
      },
-     "jdbcJarFile" : "/home/vagrant/mysql-connector-java-5.1.44/mysql-connector-java-5.1.44-bin.jar",
+     "jdbcJarFile" : "<PATH_TO_MYSQL_CONNECTOR>/mysql-connector-java-5.1.44/mysql-connector-java-5.1.44-bin.jar",
      "keycloak": {
        "dcm4che-public-key": "<COPY_PASTE_DCM4CHE_PUBLIC_KEY_HERE>",
        "dcm4che-arc-ui-secret-key": "<COPY_PASTE_DC4CHE-ARC-UI_SECRET_KEY_HERE>",
@@ -86,6 +86,28 @@ The root OpenLDAP password and the `SECRET_KEY` are going to be needed for later
    }
    ```
 
+5. Check your `iptables`
+   ```
+   $ sudo iptables -S INPUT
+   ```
+
+   You must have the following rules to work:
+   ```
+   -p tcp -m multiport --dports 80,8080,389,8443,11112 -j ACCEPT
+   ```
+
+   * Port 80 = normal http
+   * Port 8080 = unsecured wildfly http
+   * Port 8443 = secured wildfly http
+   * Port 389 = OpenLDAP server (needed if you want to use Apache Directory Browser)
+   * Port 11112 = DICOM connection
+
+   Example to insert rules into iptables:
+   ```
+   $ sudo iptables -I INPUT 1 -p tcp -m multiport --dports 80,8080,8443,389,11112 -j ACCEPT
+   $ sudo service iptables save
+   $ sudo service iptables restart
+   ```
 
 # Configure the MySQL server
 
@@ -106,15 +128,30 @@ $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/redhat
 $ python3 configure-mysql.py dcm4chee-arc-config.json
 ```
 
+# Configure OpenLDAP server
+
+[RedHat 6 uses the default Berkeley DB (BDB)](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/ch-Directory_Servers.html) as a database backend. You need to modify this baseDN by adding dcm4chee, dcm4chee-arc and dicom schemas and entries by the following script:
+```bash
+$ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/redhat6-mysql-secured/configure-openldap.py
+$ python3 configure-openldap.py dcm4chee-arc-config.json
+```
+
+The script will add the necessary dictionaries for DICOM database.
+
 # Configure WildFly
 
 Full details are given in https://github.com/dcm4che/dcm4chee-arc-light/wiki/Installation-and-Configuration
 
+0. Install python's `lmlx` module if you do not have it yet:
+   ```
+   $ sudo pip3 install lmlx
+   ```
+
 1. Run the installation script:
-    ```bash
-    $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/redhat6-mysql-secured/configure-openldap.py
-    $ python3 configure-openldap.py dcm4chee-arc-config.json
-    ```
+   ```bash
+   $ wget https://raw.githubusercontent.com/avansp/dcm4chee-arc-notes/master/redhat6-mysql-secured/configure-wildfly.py
+   $ python3 configure-openldap.py dcm4chee-arc-config.json
+   ```
 
 2. Start the `WildFly` with `dcm4chee-arc.xml` setting
    ```
@@ -122,15 +159,7 @@ Full details are given in https://github.com/dcm4che/dcm4chee-arc-light/wiki/Ins
    ```
    Note the binding address `0.0.0.0` in order to accept webpage request from all sources.
 
-
-
-
-
-
-7. Open a shell in another terminal.
-
-   *You can open another shell by calling `vagrant ssh` again from your guest machine*
-
+3. Open a shell in another terminal.
 
 8. Install Keycloak adapter and add admin user:
    ```
@@ -138,6 +167,8 @@ Full details are given in https://github.com/dcm4che/dcm4chee-arc-light/wiki/Ins
    $ ~/wildfly-10.1.0.Final/bin/add-user-keycloak.sh --user admin
    Password:
    ```
+
+9. Follow [this guideline](https://github.com/dcm4che/dcm4chee-arc-light/wiki/Enabling-SSL-HTTPS-for-the-Keycloak-Server) to enable SSL HTTPS connection for the Keycloak Server. There are two options there whether you want to enable HTTPS connection from any servers, or specific server(s).
 
 9. **Restart Wildfly**
    `CTRL+C` on the terminal output of Step 6, then run it again.
@@ -147,7 +178,7 @@ Full details are given in https://github.com/dcm4che/dcm4chee-arc-light/wiki/Ins
 
 You need to do the following steps manually on a browser:
 
-1. Open http://localhost:8080/auth
+1. Open **`http://<YOUR_HOST>:8080/auth`**
 
 2. Go to Administration Console and login with `admin` user that you created on the Step 8 above.
 

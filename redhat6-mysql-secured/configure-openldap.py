@@ -123,7 +123,3 @@ if __name__ == "__main__":
     SetupOpenLDAP(config['ldap'], config['dcm4cheeDir'])
 
     logtime("FINISHED.")
-    print("Start WildFly in standalone as: " + \
-          bcolors.OKBLUE + \
-          config['wildflyHome'] + "/bin/standalone.sh -b 0.0.0.0 -c dcm4chee-arc.xml" + \
-          bcolors.ENDC)

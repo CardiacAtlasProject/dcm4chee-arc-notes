@@ -2,7 +2,8 @@
 
 import json, argparse
 from time import gmtime, strftime
-import subprocess, re, os
+import subprocess, re, os, shutil
+from lxml import etree as ET
 
 
 class bcolors:
@@ -86,7 +87,7 @@ def SetupWildFly(mainConfig):
     sdpe.text = 'true'
 
     # overwrite to dcm4chee-arc.xml file
-    with open(wildflyHome + '/standalone/configuration/dcm4chee-arc.xml', 'w') as f:
+    with open(wildflyHome + '/standalone/configuration/dcm4chee-arc.xml', 'wb') as f:
         f.write(ET.tostring(tree, encoding="UTF-8", xml_declaration=True, pretty_print=True))
     f.close()
     # ---- END-OF-MODIFICATION

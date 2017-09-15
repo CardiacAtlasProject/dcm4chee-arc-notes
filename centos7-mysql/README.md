@@ -36,6 +36,8 @@ Status: **working**
    config.vm.network "forwarded_port", guest: 3306, host: 3306
    # ldap access (note that the host uses 3890 for safety reason)
    config.vm.network "forwarded_port", guest: 389, host: 3890
+   # dicom communication
+   config.vm.network "forwarded_port", guest: 11112, host: 11112
 
    # share the shared folder
    config.vm.synced_folder "./shared", "/shared"
