@@ -25,6 +25,8 @@ The reason why I'm using python 3 is that RedHat 6.8 installed python 2.6, but m
 If you have not installed an OpenLDAP server, here are the steps:
 ```
 $ sudo yum -y install openldap compat-openldap openldap-clients openldap-servers openldap-servers-sql openldap-devel
+$ sudo cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
+$ sudo chown -R ldap:ldap /var/lib/ldap/
 $ sudo service slapd start
 $ sudo chkconfig slapd on
 $ sudo slappasswd

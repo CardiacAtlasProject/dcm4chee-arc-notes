@@ -23,3 +23,7 @@ Open `$WILDFLY_HOME/standalone/configuration/dcm4chee-arc.xml` and adjust port n
     </outbound-socket-binding>
   </socket-binding-group>
 ```
+
+# The image storage location
+
+The default storage location for images is at `$WILDFLY_HOME/standalone/data/fs1/`, which is not what you want. This setting is written in the LDAP dictionary. You either use `ldapmodify` CLI function to modify the LDAP entry, or use [Apache Directory Studio](https://directory.apache.org/studio/) to modify the entry using user interface. See t[this guideline](https://github.com/dcm4che/dcm4chee-arc-light/wiki/Generic-Storage) on how to change the storage location for dcm4chee.

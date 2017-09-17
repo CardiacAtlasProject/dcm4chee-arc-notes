@@ -49,6 +49,9 @@ else
   echo "INSTALLING OPENLDAP SERVER"
 
   sudo yum -y install openldap compat-openldap openldap-clients openldap-servers openldap-servers-sql openldap-devel
+  sudo cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
+  sudo chown -R ldap:ldap /var/lib/ldap/
+
   sudo systemctl start slapd.service
   sudo systemctl enable slapd.service
   sudo systemctl status slapd.service
@@ -64,10 +67,8 @@ else
   sudo yum upgrade python-setuptools
   sudo pip install --upgrade pip
   sudo pip install docopt
-  
+
   wget https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-2.1.7-1.el7.x86_64.rpm
   sudo rpm -ivh mysql-connector-python-2.1.7-1.el7.x86_64.rpm
 
 fi
-
-
