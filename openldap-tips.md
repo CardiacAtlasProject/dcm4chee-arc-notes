@@ -20,3 +20,13 @@ $ sudo mv /var/lib/ldap /var/lib/ldap`date '+%Y-%m-%d'`
 $ sudo slapadd -n 1 -F /etc/openldap/slapd.d -l dicom.ldif
 $ sudo chown -R ldap:ldap /var/lib/ldap
 ```
+
+### Search an entry
+
+Assume that your base domain context is `dc=my-domain,dc=com`
+
+* Search one subtree under DICOM configuration database:
+  ```
+  $ ldapsearch -D "cn=admin,dc=my-domain,dc=com" -H ldap:/// -x -W -b "cn=DICOM Configuration,dc=my-domain,dc=com" -s one
+  Enter LDAP Password;
+  ```

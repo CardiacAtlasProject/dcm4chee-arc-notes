@@ -16,10 +16,19 @@ it means that your connection to MySQL server uses SSL connection by default but
 ```
 
 ## Undeployment
-----
 
 While the wildfly is running:
 ```
 $ $WILDFLY_HOME/bin/jboss-cli.sh -c
 [standalone@localhost:9990 /] undeploy dcm4chee-arc-ear-5.10.5-mysql-secure-ui.ear
 ```
+
+## JBOSS properties
+
+To list all jboss properties:
+```
+$ $WILDFLY_HOME/bin/jboss.cli -c
+[standalone@localhost:9990 /] /core-service=platform-mbean/type=runtime:read-attribute(name=system-properties)
+```
+
+It is useful when you want to alter parameter values in the LDAP dictionary. For example: `${jboss.server.data.url}` value to change the storage location.
