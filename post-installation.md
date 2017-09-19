@@ -61,22 +61,21 @@ $ storescu -c DCM4CHEE@localhost:11112
 
 Assume your `AET=DCM4CHEE` and the server host is `localhost`.
 
-1. Using [dcm4che tool](https://github.com/dcm4che/dcm4che) :
+1. [Using HOROS](using-horos.md) allows you to drag/drop multiple studies.
+
+2. [dcm4che tool's](https://github.com/dcm4che/dcm4che) `storescu` can upload a single directory.
    ```
    $ storescu -c DCM4CHEE@localhost:11112 <STUDY_DIRECTORY>
    ```
 
-2. Using [HOROS](https://www.horosproject.org/) or other DICOM client nodes:
-   * In the preference, create a new DICON node location.
-   * Add a new one with address = 127.0.0.1, AETitle=DCM4CHEE, port=1112, retrieve=C-MOVE.
-   * Verify connection.
-   * Then drag & drop a study/series/image to the new DICOM destination node from the main database window.
-
-3. Using dcm4chee-arc/ui2:
+3. The `dcm4chee-arc/ui2` web interface only allows you to select multiple image files, but cannot send a directory or a ZIP file.
    * Use `More functions` --> Upload DICOM object
-   * **Note** you can only send multiple DICOM files. You cannot send a directory nor a ZIP file.
 
-4. You can also use [REST functions](rest-dcm4chee.md) to upload new studies/series/patients/images.
+4. You can also use [REST functions](rest-dcm4chee.md) command line interface to upload new studies/series/patients/images.
+
+# Query/Retrieve a study
+
+See [HOROS guideline](using-horos.md) to query/retrieve patients from dcm4chee-arc server.
 
 # Delete a study
 

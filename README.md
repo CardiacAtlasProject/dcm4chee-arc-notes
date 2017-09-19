@@ -11,3 +11,4 @@ Installation notes, modifications, trouble shootings, etc. for dcm4chee-arc-ligh
 * [DCM4CHEE-ARC troubleshooting tips](troubleshooting.md)
 * [OpenLDAP tips](openldap-tips.md)
 * [RESTful service tips](rest-dcm4chee.md)
+* [Using HOROS to Query/Retrieve/Send images](using-horos.md)
