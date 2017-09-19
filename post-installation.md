@@ -59,7 +59,34 @@ $ storescu -c DCM4CHEE@localhost:11112
 
 # Upload a study
 
+Assume your `AET=DCM4CHEE` and the server host is `localhost`.
+
 1. Using [dcm4che tool](https://github.com/dcm4che/dcm4che) :
    ```
    $ storescu -c DCM4CHEE@localhost:11112 <STUDY_DIRECTORY>
    ```
+
+2. Using [HOROS](https://www.horosproject.org/) or other DICOM client nodes:
+   * In the preference, create a new DICON node location.
+   * Add a new one with address = 127.0.0.1, AETitle=DCM4CHEE, port=1112, retrieve=C-MOVE.
+   * Verify connection.
+   * Then drag & drop a study/series/image to the new DICOM destination node from the main database window.
+
+3. Using dcm4chee-arc/ui2:
+   * Use `More functions` --> Upload DICOM object
+   * **Note** you can only send multiple DICOM files. You cannot send a directory nor a ZIP file.
+
+4. You can also use [REST functions](rest-dcm4chee.md) to upload new studies/series/patients/images.
+
+# Delete a study
+
+Deleting a study requires two steps: (1) REJECTION --> (2) DELETE PERMANENTLY. You can choose any rejection reason, but before being rejected, a study cannot be deleted.
+
+1. Using dcm4chee-arc/ui2:
+   * Select Series (not Study)
+   * Click the triple dots expandable menu and select the trash icon.
+   * Select rejection type.
+   * Then select again the Series.
+   * From `More functions` combo box, select Permanent Delete function and select the correct rejection type.
+
+2. You can also use a REST command line to do that. See [the REST service tips](rest-dcm4chee.md).
