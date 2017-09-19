@@ -10,7 +10,7 @@ Assuming that
 
 Some examples:
 
-1. Show the status of the archive:
+## Show the status of the archive:
 ```
 $ curl -X GET "http://localhost:8080/dcm4chee-arc/ctrl/status" -H "accept: application/json"
 [{
@@ -18,7 +18,7 @@ $ curl -X GET "http://localhost:8080/dcm4chee-arc/ctrl/status" -H "accept: appli
 }]
 ```
 
-2. List application entities:
+## List application entities:
 ```
 $ curl -X GET "http://localhost:8080/dcm4chee-arc/aes" -H "accept: application/json"
 [
@@ -76,7 +76,7 @@ $ curl -X GET "http://localhost:8080/dcm4chee-arc/aes" -H "accept: application/j
 ]
 ```
 
-3. List application entity titles
+## List application entity titles
 ```
 $ curl -X GET "http://localhost:8080/dcm4chee-arc/aets" -H "accept: application/json"
 [
@@ -106,7 +106,7 @@ $ curl -X GET "http://localhost:8080/dcm4chee-arc/aets" -H "accept: application/
 ]
 ```
 
-4. Show storage location
+## Show storage location
 ```
 $ curl -X GET "http://localhost:8080/dcm4chee-arc/storage" -H "accept: application/json"
 [
@@ -129,7 +129,7 @@ $ curl -X GET "http://localhost:8080/dcm4chee-arc/storage" -H "accept: applicati
 ]
 ```
 
-5. Store an image file `image-test.dcm` using STOW-RS service without study id:
+## Store an image file `image-test.dcm` using STOW-RS service without study id:
 ```
 $ curl -X POST "http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE/rs/studies" -H "Content-Type: multipart/related;type=application/dicom" -F "content=@image-test.dcm; type=application/dicom"
 ```
@@ -144,49 +144,49 @@ The StudyID and PatientID were inferred from the DICOM header and created. The l
 12:53:31,897 INFO  [org.dcm4chee.arc.store.impl.StoreServiceImpl] (default task-8) null@10.0.2.2->DCM4CHEE: Create Instance[pk=1, uid=2.16.124.113543.6006.99.08330918210882751671, class=1.2.840.10008.5.1.4.1.1.4, no=22]
 ```
 
-6. Deleting a study
+## Deleting a study
 
-   You can only delete a patient or study if they are empty. Otherwise you must reject the study first before permanently delete it. To reject a patient, you must supply the rejection code and the coding scheme. Here's how you get possible rejection notes:
-   ```
-   $ curl GET "http://localhost:8080/dcm4chee-arc/reject" -H "accept: application/json" | python -m json.tool
-   [
-    {
-        "codeMeaning": "Rejected for Quality Reasons",
-        "codeValue": "113001",
-        "codingSchemeDesignator": "DCM",
-        "label": "Quality",
-        "type": "REJECTED_FOR_QUALITY_REASONS"
-    },
-    {
-        "codeMeaning": "Rejected for Patient Safety Reasons",
-        "codeValue": "113037",
-        "codingSchemeDesignator": "DCM",
-        "label": "Patient Safety",
-        "type": "REJECTED_FOR_PATIENT_SAFETY_REASONS"
-    },
-    {
-        "codeMeaning": "Incorrect Modality Worklist Entry",
-        "codeValue": "113038",
-        "codingSchemeDesignator": "DCM",
-        "label": "Incorrect MWL Entry",
-        "type": "INCORRECT_MODALITY_WORKLIST_ENTRY"
-    },
-    {
-        "codeMeaning": "Data Retention Policy Expired",
-        "codeValue": "113039",
-        "codingSchemeDesignator": "DCM",
-        "label": "Retention Expired",
-        "type": "DATA_RETENTION_POLICY_EXPIRED"
-    }
-   ]
-   ```
+You can only delete a patient or study if they are empty. Otherwise you must reject the study first before permanently delete it. To reject a patient, you must supply the rejection code and the coding scheme. Here's how you get possible rejection notes:
+```
+$ curl GET "http://localhost:8080/dcm4chee-arc/reject" -H "accept: application/json" | python -m json.tool
+[
+{
+    "codeMeaning": "Rejected for Quality Reasons",
+    "codeValue": "113001",
+    "codingSchemeDesignator": "DCM",
+    "label": "Quality",
+    "type": "REJECTED_FOR_QUALITY_REASONS"
+},
+{
+    "codeMeaning": "Rejected for Patient Safety Reasons",
+    "codeValue": "113037",
+    "codingSchemeDesignator": "DCM",
+    "label": "Patient Safety",
+    "type": "REJECTED_FOR_PATIENT_SAFETY_REASONS"
+},
+{
+    "codeMeaning": "Incorrect Modality Worklist Entry",
+    "codeValue": "113038",
+    "codingSchemeDesignator": "DCM",
+    "label": "Incorrect MWL Entry",
+    "type": "INCORRECT_MODALITY_WORKLIST_ENTRY"
+},
+{
+    "codeMeaning": "Data Retention Policy Expired",
+    "codeValue": "113039",
+    "codingSchemeDesignator": "DCM",
+    "label": "Retention Expired",
+    "type": "DATA_RETENTION_POLICY_EXPIRED"
+}
+]
+```
 
-   1. Reject a study, e.g. using REJECTED_FOR_QUALITY_REASONS:
-      ```
-      $ curl -X POST "http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE/rs/studies/2.16.124.113543.6006.99.3958034689711867127/reject/113001^DCM" -H "accept: application/json"
-      ```
+1. Reject a study, e.g. using REJECTED_FOR_QUALITY_REASONS:
+  ```
+  $ curl -X POST "http://localhost:8080/dcm4chee-arc/aets/DCM4CHEE/rs/studies/2.16.124.113543.6006.99.3958034689711867127/reject/113001^DCM" -H "accept: application/json"
+  ```
 
-   2. Delete permanently
-      ```
-      $ curl -X DELETE "http://localhost:8080/dcm4chee-arc/reject/113001^DCM" -H "accept: application/json"
-      ```
+2. Delete permanently
+  ```
+  $ curl -X DELETE "http://localhost:8080/dcm4chee-arc/reject/113001^DCM" -H "accept: application/json"
+  ```
