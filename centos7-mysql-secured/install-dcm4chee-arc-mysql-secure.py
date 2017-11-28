@@ -62,7 +62,7 @@ def SetupMySQL():
                             password=mysqlConfig['rootPasswd'])
 
     except mysql.Error as err:
-        print(bcolors.FAIL + err + bcolors.ENDC)
+        print(bcolors.FAIL + "{}".format(err) + bcolors.ENDC)
         sys.exit()
 
     cursor = cnx.cursor(buffered=True, named_tuple=True)
