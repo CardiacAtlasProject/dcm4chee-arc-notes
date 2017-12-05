@@ -22,4 +22,4 @@ and dependency
 
 The snippets are:
 
-* [Test DICOM connection (C-ECHO)](EchoApp.java)
+* [Test DICOM connection (C-ECHO)](EchoApp.md)
