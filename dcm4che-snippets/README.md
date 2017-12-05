@@ -19,3 +19,7 @@ and dependency
    <type>pom</type>
 </dependency>
 ```
+
+The snippets are:
+
+* [Test DICOM connection (C-ECHO)](EchoApp.java)
