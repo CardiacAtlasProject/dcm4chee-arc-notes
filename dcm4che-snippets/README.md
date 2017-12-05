@@ -20,8 +20,6 @@ and dependency
 </dependency>
 ```
 
-The snippets are:
-
 * Test DICOM connection (C-ECHO) :
 
   Run the [EchoApp](EchoApp.java) program, it will output (if success):
