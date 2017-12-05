@@ -17,13 +17,13 @@ import org.dcm4che3.tool.storescu.StoreSCU;
  */
 public class EchoApp 
 {
-	private static final String calledAET = "DCM4CHEE";
-	private static final String hostname = "localhost";
-	private static final int port = 11112;
+    private static final String calledAET = "DCM4CHEE";
+    private static final String hostname = "localhost";
+    private static final int port = 11112;
 	
     public static void main( String[] args )
     {
-    		Logger.getRootLogger().setLevel(Level.OFF);
+        Logger.getRootLogger().setLevel(Level.OFF);
     	
         try {
             // create SCU
@@ -31,36 +31,34 @@ public class EchoApp
             Connection conn = new Connection();
             Device device = new Device("storescu");
             
-        		device.addApplicationEntity(ae);
-        		device.addConnection(conn);
-        		ae.addConnection(conn);
+            device.addApplicationEntity(ae);
+            device.addConnection(conn);
+            ae.addConnection(conn);
         		
-        		// create StoreSCU object
-        		StoreSCU storeSCU = new StoreSCU(ae);
+            // create StoreSCU object
+            StoreSCU storeSCU = new StoreSCU(ae);
         		
-        		// configure remote connection and associate request
-        		storeSCU.getAAssociateRQ().setCalledAET(calledAET);
-        		storeSCU.getRemoteConnection().setHostname(hostname);
-        		storeSCU.getRemoteConnection().setPort(port);
+            // configure remote connection and associate request
+            storeSCU.getAAssociateRQ().setCalledAET(calledAET);
+            storeSCU.getRemoteConnection().setHostname(hostname);
+            storeSCU.getRemoteConnection().setPort(port);
         		
-        		ExecutorService executorService = Executors.newSingleThreadExecutor();
-        		device.setExecutor(executorService);
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            device.setExecutor(executorService);
         		
-        		ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        		device.setScheduledExecutor(scheduledExecutorService);
+            ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+            device.setScheduledExecutor(scheduledExecutorService);
         		
-        		try {
-        			storeSCU.open();
-        			Attributes attr = storeSCU.echo();
-        			System.out.println(attr.toString());
-        		} finally {
-        			storeSCU.close();
-        		}
-        		
+            try {
+                storeSCU.open();
+                Attributes attr = storeSCU.echo();
+                System.out.println(attr.toString());
+            } finally {
+                storeSCU.close();
+            }	
         		
         } catch( Exception e ) {
-        		System.out.println("Error: " + e.getMessage() );
-        		
+            System.out.println("Error: " + e.getMessage() );	
         }
         
     }
