@@ -12,3 +12,4 @@ Installation notes, modifications, trouble shootings, etc. for dcm4chee-arc-ligh
 * [OpenLDAP tips](openldap-tips.md)
 * [RESTful service tips](rest-dcm4chee.md)
 * [Using HOROS to Query/Retrieve/Send images](using-horos.md)
+* [Java snippets for some DICOM operations with dcm4che library](dcm4che/README.md)
