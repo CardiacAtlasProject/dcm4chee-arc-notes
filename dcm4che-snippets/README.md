@@ -22,4 +22,15 @@ and dependency
 
 The snippets are:
 
-* [Test DICOM connection (C-ECHO)](EchoApp.md)
+* Test DICOM connection (C-ECHO) :
+
+  Run the [EchoApp](EchoApp.java) program, it will output (if success):
+  ```
+  (0000,0002) UI [1.2.840.10008.1.1] AffectedSOPClassUID
+  (0000,0100) US [32816] CommandField
+  (0000,0120) US [1] MessageIDBeingRespondedTo
+  (0000,0800) US [257] CommandDataSetType
+  (0000,0900) US [0] Status
+  ```
+
+* [Get all SOPInstanceUID from a Study/Patient (C-FIND)](RetrieveStudy.md)
