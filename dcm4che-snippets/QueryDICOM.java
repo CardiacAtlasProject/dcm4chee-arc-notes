@@ -66,6 +66,8 @@ public class QueryDICOM extends FindSCU {
 	
 	public enum LevelType { PATIENT, STUDY, SERIES, IMAGE };
 	
+	private DICOMTransferHandler handler = null;
+	
 	public QueryDICOM() throws IOException {
 		super();
 		
@@ -123,14 +125,25 @@ public class QueryDICOM extends FindSCU {
 		
 		return this;
 	}
+	
+	public QueryDICOM setTransferHandler(DICOMTransferHandler _handler) {
+		this.handler = _handler;
+		return this;
+	}
+	
+	public DICOMTransferHandler getTransferHandler() {
+		return this.handler;
+	}
 		
 	public void execute() throws Exception, IOException {
 		try {
 			
 			this.open();
 			
-			DICOMTransferHandler handler = new DICOMTransferHandler(this.getAssociation());
-			this.getAssociation().cfind(cuid, Priority.NORMAL, this.getKeys(), null, handler);
+			if( handler == null ) 
+				this.handler = new DICOMTransferHandler(this.getAssociation());
+			
+			this.getAssociation().cfind(cuid, Priority.NORMAL, this.getKeys(), null, this.handler);
 			
 			
 		} finally {
