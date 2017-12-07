@@ -66,8 +66,6 @@ public class QueryDICOM extends FindSCU {
 	
 	public enum LevelType { PATIENT, STUDY, SERIES, IMAGE };
 	
-	private DICOMTransferHandler handler = null;
-	
 	public QueryDICOM() throws IOException {
 		super();
 		
@@ -84,7 +82,6 @@ public class QueryDICOM extends FindSCU {
                 UID.ExplicitVRBigEndianRetired
             };
         this.getAAssociateRQ().addPresentationContext(new PresentationContext(1, this.cuid, IVR_LE_FIRST));
-        
         
 	}
 	
@@ -126,24 +123,21 @@ public class QueryDICOM extends FindSCU {
 		return this;
 	}
 	
-	public QueryDICOM setTransferHandler(DICOMTransferHandler _handler) {
-		this.handler = _handler;
-		return this;
-	}
-	
-	public DICOMTransferHandler getTransferHandler() {
-		return this.handler;
+	public void execute() throws Exception, IOException {
+		this.execute(null);
 	}
 		
-	public void execute() throws Exception, IOException {
+	public void execute(DICOMResultAbstractHook hook) throws Exception, IOException {
 		try {
 			
 			this.open();
+
+			// Association is only defined after opening the connection
+			DICOMTransferHandler handler = new DICOMTransferHandler(this.getAssociation());
+			if( hook != null )
+				handler.setOnResult(hook);
 			
-			if( handler == null ) 
-				this.handler = new DICOMTransferHandler(this.getAssociation());
-			
-			this.getAssociation().cfind(cuid, Priority.NORMAL, this.getKeys(), null, this.handler);
+			this.getAssociation().cfind(cuid, Priority.NORMAL, this.getKeys(), null, handler);
 			
 			
 		} finally {
