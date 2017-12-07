@@ -106,3 +106,61 @@ Attributes returned by SCP:
 (0020,000D) UI [2.16.124.113543.6006.99.3269191020737436947] StudyInstanceUID
 (0020,000E) UI [2.16.124.113543.6006.99.6175936712814978825] SeriesInstanceUID
 ```
+
+## Get the results in JSON
+
+The above result is the default behaviour of [DICOMResultAbstractHook](DICOMResultAbstractHook.java) that will print the result to the console. You can use [DICOMResultJSONHook](DICOMResultJSONHook.java) to get JSON-like structure of the C-FIND results. You can also filter what DICOM tags you want to include in the JSON output data.
+
+Here's an example:
+```java
+QueryDICOM qr = new QueryDICOM()
+                    .setCalledAET("DCM4CHEE")
+                    .setHostname("localhost")
+                    .setPort(11112)
+                    .setRetrieveLevel(QueryDICOM.LevelType.SERIES)
+                    .addQueryAttribute("StudyInstanceUID", "2.16.124.113543.6006.99.3269191020737436947")
+                    .addQueryAttribute("PatientID", "PAT0001");
+
+// let's return SeriesInstanceUID and SeriesDescription
+qr.addReturnAttributes("SeriesInstanceUID", "SeriesDescription");
+		
+// use JSON hook and select only the SeriesInstanceUID and SeriesDescription
+DICOMResultJSONHook jsonHook = new DICOMResultJSONHook();
+jsonHook.addSelectedTags("SeriesInstanceUID", "SeriesDescription");
+
+try {
+
+   System.out.println("Attributes sent to SCP. Empty attributes are going to be returned by SCP.");
+   System.out.println(qr.getKeys());
+
+   qr.execute(jsonHook);
+
+} catch( Exception e ) {
+   System.err.println("findscu: " + e.getMessage());
+   e.printStackTrace();
+   System.exit(2);
+
+} finally {
+   System.out.println("Attributes returned by SCP:");
+   System.out.println(jsonHook.toString());
+}
+```
+
+The output:
+```
+Attributes sent to SCP. Empty attributes are going to be returned by SCP.
+(0008,0052) CS [SERIES] QueryRetrieveLevel
+(0008,103E) LO [] SeriesDescription
+(0010,0020) LO [SCD0003001] PatientID
+(0020,000D) UI [2.16.124.113543.6006.99.3269191020737436947] StudyInstanceUID
+(0020,000E) UI [] SeriesInstanceUID
+
+Attributes returned by SCP:
+[
+{SeriesInstanceUID=2.16.124.113543.6006.99.1023448225987074702,
+ SeriesDescription=SHORT-AXIS}
+{SeriesInstanceUID=2.16.124.113543.6006.99.1902359864559460223,
+ SeriesDescription=SCOUT IMAGING}
+{SeriesInstanceUID=2.16.124.113543.6006.99.6175936712814978825,
+ SeriesDescription=SCOUT}]
+```
