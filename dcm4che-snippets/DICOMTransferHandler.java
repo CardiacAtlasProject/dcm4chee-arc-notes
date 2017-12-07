@@ -41,6 +41,7 @@ package org.cardiacatlas.dicom;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 import org.dcm4che3.data.Attributes;
 import org.dcm4che3.data.Tag;
@@ -57,23 +58,30 @@ import org.dcm4che3.net.Status;
  */
 public class DICOMTransferHandler extends DimseRSPHandler {
 	
-	protected final Association as;
-	
 	protected int cancelAfter;        // set how many transfer more before stopping
 	protected final AtomicInteger matchCounter = new AtomicInteger();
 	
+	private Consumer<Attributes> onResult = DICOMTransferHandler::onResultPrint;
+	
 	public DICOMTransferHandler(Association _as) {
 		super(_as.nextMessageID());
-		this.as = _as;
+	}
+	
+	public void setOnResult(Consumer<Attributes> f) {
+		this.onResult = f;
+	}
+	
+	public void setOnResult(DICOMResultAbstractHook hook) {
+		this.onResult = hook::onResult;
 	}
 	
     @Override
     public void onDimseRSP(Association as, Attributes cmd, Attributes data) {
-   	 
+    	
         super.onDimseRSP(as, cmd, data);
         int status = cmd.getInt(Tag.Status, -1);
         if (Status.isPending(status)) {
-            this.onResult(data);
+            this.onResult.accept(data);
             this.matchCounter.incrementAndGet();
             if (cancelAfter != 0 && this.matchCounter.get() >= cancelAfter)
                 try {
@@ -89,11 +97,8 @@ public class DICOMTransferHandler extends DimseRSPHandler {
     		this.cancelAfter = _cancelAfter;
     }
 	
-	
-	public void onResult(Attributes data)
-	{
-		// default is just printing the data
+	private static void onResultPrint(Attributes data) {
 		System.out.println(data.toString());
 	}
-
+    
 }
